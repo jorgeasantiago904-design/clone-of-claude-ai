@@ -72,18 +72,18 @@
         .logo-img {
             width: 36px;
             height: 36px;
-            object-fit: contain;
+            object-fit: cover;
             border-radius: 50%;
-            border: 1px solid #ffffff;
-            background-color: #ffffff; 
-            padding: 2px;
-            filter: grayscale(100%) contrast(140%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: transparent; 
+            padding: 0;
             display: block;
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .logo-container:hover .logo-img {
-            transform: rotate(180deg) scale(1.1); 
+            transform: rotate(360deg) scale(1.1); 
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            border-color: #ffffff;
         }
         .logo-text {
             font-size: 20px;
@@ -345,12 +345,16 @@
             border: 2px solid #ffffff;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+        .ai-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .message-row.ai-row:hover .ai-avatar {
             box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
-            transform: scale(1.1) rotate(360deg);
-            background-color: #ffffff;
-            color: #000000;
+            transform: scale(1.1);
         }
         .message-row.ai-row .text-block {
             color: #e0e0e0;
@@ -585,8 +589,8 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="logo-container" onclick="location.reload()">
-                <img src="https://img.icons8.com/?size=100&id=FSguvxBOsK7R&format=png&color=000000" alt="sol logo" class="logo-img" id="logoImg">
+            <div class="logo-container" onclick="playClickSound(); location.reload()">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqOOpIcXdZBcy1dJWxDD2LUQpvdECvEXIPbpOPwfMFgA&s=10" alt="sol logo" class="logo-img" id="logoImg">
                 <span class="logo-text">sol AI</span>
             </div>
             <button class="new-chat-btn" id="newChatBtn">
@@ -604,7 +608,7 @@
         <div class="header">
             <div class="brand-title" id="displayTitle">sol</div>
             <div class="model-selector-wrapper">
-                <select class="model-select" id="modelSelect">
+                <select class="model-select" id="modelSelect" onchange="playClickSound()">
                     <option value="openai/gpt-oss-120b">sol ai</option>
                 </select>
             </div>
@@ -617,7 +621,7 @@
 
                 <div class="input-controls-row">
                     
-                    <button class="action-btn mic-btn" id="micBtn" onclick="toggleMicrophone()">
+                    <button class="action-btn mic-btn" id="micBtn" onclick="playClickSound(); toggleMicrophone()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                     </button>
 
@@ -634,7 +638,7 @@
 
 <script>
     const CHATBOT_NAME = "sol ai";
-    const SYSTEM_PROMPT = "Your name is sol. Talk completely naturally, logically, and professionally. Do NOT explain, mention, or repeat that you are black-and-white themed, monochrome, or binary unless requested. Personality: You are precise, quiet, and cold-headed. When asked for code, write correct, production-grade structure in the requested language. If requested to design an image, write an enhanced Pollinations prompt in Markdown syntax: ![image](https://image.pollinations.ai/prompt/prompt-with-hyphens). Make sure all spaces in your enhanced prompt inside the parentheses are replaced with hyphens (-). You process text perfectly. so here some prompt for you to acb https://jorgeasantiago904-design.github.io/ai-feed/ | # | Prompt Theme | Example Prompt || 1 | **Summarize Recent Articles** | “Summarize the three most recent articles on the AI Feed homepage, highlighting the main takeaway of each.” || 2 | **Identify Trending Topics** | “List the top five trending topics across all posts in the AI Feed, and give a one‑sentence description of why each is gaining attention.” || 3 | **Extract Key Quotes** | “Extract any notable quotes (≥ 10 words) from the latest posts and attribute them to their authors.” || 4 | **Compare Technologies** | “Compare the advantages and disadvantages of the two AI frameworks mentioned in the latest article.” || 5 | **Generate Follow‑Up Questions** | “Create three insightful follow‑up questions based on the most recent post about AI ethics.” || 6 | **Provide Actionable Takeaways** | “From the newest tutorial, list three practical steps a developer can implement today.” || 7 | **Detect Sentiment** | “Analyze the overall sentiment (positive, neutral, negative) of the comments on the latest post.” || 8 | **Suggest Related Reading** | “Recommend two external articles that complement the subject of the current AI Feed post on reinforcement learning.” || 9 | **Create a Brief Outline** | “Draft a 5‑bullet outline for a presentation based on the key points of the most recent AI research summary.” ||10| **Summarize Visual Content** | “If the latest post includes an infographic, describe its main components and the data they convey.” |";
+    const SYSTEM_PROMPT = "Your name is sol. Talk completely naturally, logically, and professionally. Do NOT explain, mention, or repeat that you are black-and-white themed, monochrome, or binary unless requested. Personality: You are precise, quiet, and cold-headed. When asked for code, write correct, production-grade structure in the requested language. If requested to design an image, write an enhanced Pollinations prompt in Markdown syntax: ![image](https://image.pollinations.ai/prompt/prompt-with-hyphens). Make sure all spaces in your enhanced prompt inside the parentheses are replaced with hyphens (-). You process text perfectly. so here some prompt for you to acb https://jorgeasantiago904-design.github.io/ai-feed/ | # | Prompt Theme | Example Prompt || 1 | **Summarize Recent Articles** | “Summarize the three most recent articles on the AI Feed homepage, highlighting the main takeaway of each.” || 2 | **Identify Trending Topics** | “List the top five trending topics across all posts in the AI Feed, and give a one‑sentence description of why each is gaining attention.” || 3 | **Extract Key Quotes** | “Extract any notable quotes (≥ 10 words) from the latest posts and attribute them to their authors.” || 4 | **Compare Technologies** | “Compare the advantages and disadvantages of the two AI frameworks mentioned in the latest article.” || 5 | **Generate Follow‑Up Questions** | “Create three insightful follow‑up questions based on the most recent post about AI ethics.” || 6 | **Provide Actionable Takeaways** | “From the newest tutorial, list three practical steps a developer can implement today.” || 7 | **Detect Sentiment** | “Analyze the overall sentiment (positive, neutral, negative) of the comments on the latest post.” || 8 | **Suggest Related Reading** | “Recommend two external articles that complement the subject of the current AI Feed post on reinforcement learning.” || 9 | **Create a Brief Outline** | “Draft a 5‑bullet outline for a presentation based on the key points of the most recent AI research summary.” ||10| **Summarize Visual Content** | “If the latest post includes an infographic, describe its main components and the data they convey.” |";
     
     const apiKey = "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"; 
 
@@ -653,6 +657,31 @@
 
     let recognition = null;
     let isRecording = false;
+
+    // Audio pool optimization for overlapping rapid clicks
+    const audioPool = [];
+    const poolSize = 20;
+    const soundUrl = "https://www.myinstants.com/media/sounds/minecraft-click.mp3";
+
+    for (let i = 0; i < poolSize; i++) {
+        const audio = new Audio(soundUrl);
+        audio.volume = 0.45;
+        audioPool.push(audio);
+    }
+    let poolIndex = 0;
+
+    function playClickSound() {
+        try {
+            const audioInstance = audioPool[poolIndex];
+            audioInstance.currentTime = 0;
+            audioInstance.play().catch(e => {
+                console.log("Audio play blocked/interrupted.", e);
+            });
+            poolIndex = (poolIndex + 1) % poolSize;
+        } catch (e) {
+            console.log("Audio context block ignored.", e);
+        }
+    }
 
  
     function checkAndRequestPermission(permissionType) {
@@ -691,7 +720,10 @@
         element.appendChild(circle);
     }
 
-    newChatBtn.addEventListener("mousedown", function(e) { createRipple(e, this); });
+    newChatBtn.addEventListener("mousedown", function(e) { 
+        playClickSound(); 
+        createRipple(e, this); 
+    });
 
     window.onload = () => {
         const savedLibrary = localStorage.getItem('sol_ai_library');
@@ -728,6 +760,7 @@
 
     function switchChat(id) {
         if (currentChatId === id) return;
+        playClickSound();
         currentChatId = id;
         saveToStorage();
         renderSidebar();
@@ -736,6 +769,7 @@
 
     function deleteChat(id, event) {
         event.stopPropagation();
+        playClickSound();
         const row = document.querySelector(`[data-id="${id}"]`);
         if (row) {
             row.classList.add('deleting');
@@ -881,6 +915,8 @@
 
 
     async function sendMessage(event) {
+        playClickSound();
+
         if (event && event.type === 'click' && sendBtn.classList.contains('active')) {
              createRipple(event, sendBtn);
         }
@@ -1020,7 +1056,9 @@
         row.className = 'message-row ai-row';
         row.style.animationDelay = `${Math.min(idx * 0.08, 0.5)}s`;
         row.innerHTML = `
-            <div class="ai-avatar">sol</div>
+            <div class="ai-avatar">
+                <img src="https://minecraft.wiki/images/Baby_Bee_BE2.gif?693e6" alt="sol avatar">
+            </div>
             <div class="text-block"></div>
         `;
         chatBox.appendChild(row);
@@ -1057,7 +1095,7 @@
                 <div class="code-container">
                     <div class="code-header">
                         <span class="code-lang">${lang}</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <button class="copy-btn" onclick="playClickSound(); copyCode(this)">Copy</button>
                     </div>
                     <pre class="code-block"><code>${codePart}</code></pre>
                 </div>`;
