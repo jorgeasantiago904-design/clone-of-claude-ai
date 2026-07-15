@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sol AI</title>
     <style>
-        /* --------------------------------------------------------------
-           0️⃣ GLOBAL RESET & THEME BASICS (Monochrome Eclipse)
-           -------------------------------------------------------------- */
+     
         * {
             box-sizing: border-box;
             margin: 0;
@@ -38,9 +36,7 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: #ffffff; }
         
-        /* --------------------------------------------------------------
-           1️⃣ LEFT SIDEBAR PANEL
-           -------------------------------------------------------------- */
+       
         .sidebar {
             width: 280px;
             background-color: rgba(0, 0, 0, 0.6);
@@ -229,9 +225,7 @@
             text-align: center;
         }
 
-        /* --------------------------------------------------------------
-           2️⃣ MAIN PLAYGROUND WORKSPACE
-           -------------------------------------------------------------- */
+
         .main-content {
             flex: 1;
             display: flex;
@@ -367,9 +361,7 @@
             width: 100%;
         }
 
-        /* --------------------------------------------------------------
-           3️⃣ CODE CONTAINER & PARSER DESIGNS
-           -------------------------------------------------------------- */
+   
         .code-container {
             margin: 16px 0;
             background: #0f0f0f;
@@ -453,9 +445,7 @@
             50% { transform: translateY(-8px) scale(1.2); opacity: 1; box-shadow: 0 5px 15px rgba(255,255,255,0.6); }
         }
 
-        /* --------------------------------------------------------------
-           4️⃣ BOTTOM INPUT BAR (With Dynamic Floating Attachments Deck)
-           -------------------------------------------------------------- */
+       
         .input-panel {
             padding: 0 24px 32px 24px;
             display: flex;
@@ -480,7 +470,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 24px;
             display: flex;
-            flex-direction: column; /* To stack attachments deck above input elements */
+            flex-direction: column;
             padding: 12px 16px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -498,7 +488,7 @@
             width: 100%;
         }
         
-        /* Action Utility Buttons */
+      
         .action-btn {
             background: rgba(255,255,255,0.05);
             color: #aaaaaa;
@@ -530,7 +520,7 @@
             50% { box-shadow: 0 0 0 10px rgba(255, 51, 51, 0); }
         }
 
-        /* Popover dropdown actions */
+     
         .attachment-menu {
             position: absolute;
             bottom: 64px;
@@ -565,7 +555,7 @@
             color: #000000;
         }
 
-        /* Floating Attachments Preview Pane (Isolated outside of actual text box) */
+       
         .preview-pane {
             display: none;
             gap: 12px;
@@ -696,8 +686,7 @@
             <div class="brand-title" id="displayTitle">sol</div>
             <div class="model-selector-wrapper">
                 <select class="model-select" id="modelSelect">
-                    <option value="llama-3.2-11b-vision-preview">sol ai vision (llama-3.2)</option>
-                    <option value="openai/gpt-oss-120b">sol ai pro</option>
+                    <option value="openai/gpt-oss-120b">sol ai</option>
                 </select>
             </div>
         </div>
@@ -762,7 +751,7 @@
     let recognition = null;
     let isRecording = false;
 
-    // --- SECURE PERMISSION STORAGE AND VERIFICATION (Saves to Browser Code) ---
+ 
     function checkAndRequestPermission(permissionType) {
         const savedPerms = JSON.parse(localStorage.getItem('sol_permissions') || '{}');
         
@@ -782,7 +771,7 @@
         }
     }
 
-    // Ripple
+    
     function createRipple(event, element) {
         const circle = document.createElement("span");
         const diameter = Math.max(element.clientWidth, element.clientHeight);
@@ -928,7 +917,7 @@
         }
     }
 
-    // --- ATTACHMENTS PORTAL & SELECTION ---
+   
     function toggleAttachmentMenu(event) {
         event.stopPropagation();
         attachmentMenu.classList.toggle('open');
@@ -951,7 +940,7 @@
 
         const reader = new FileReader();
 
-        // Detect if uploaded item is a code/text file
+      
         const isTextFile = file.name.endsWith('.js') || file.name.endsWith('.py') || 
                            file.name.endsWith('.html') || file.name.endsWith('.css') || 
                            file.name.endsWith('.json') || file.name.endsWith('.txt') || 
@@ -1025,7 +1014,7 @@
         toggleSendBtnState();
     }
 
-    // --- SOUND RECOGNITION (Microphone Speech to Text) ---
+   
     function setupSpeechRecognition() {
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!window.SpeechRecognition) {
@@ -1084,7 +1073,7 @@
         });
     }
 
-    // --- API CORE WITH DETAILED DUAL-LAYER VISION/CODE TRANSLATION ---
+
     async function sendMessage(event) {
         if (event && event.type === 'click' && sendBtn.classList.contains('active')) {
              createRipple(event, sendBtn);
@@ -1094,7 +1083,7 @@
         const attachments = [...uploadedMediaCache];
         if (!userText && attachments.length === 0) return;
 
-        // If user uploaded code/text, inject context clearly so model sees it immediately
+        
         let promptWithCode = userText;
         attachments.forEach(attachment => {
             if (attachment.type === 'code') {
@@ -1138,22 +1127,21 @@
 
         try {
             let apiMessages = [];
-            
-            // Re-compile API payload stack
+           
             chatLibrary[currentChatId].history.forEach(msg => {
                 if (msg.role === 'system') {
                     apiMessages.push({ role: "system", content: msg.content });
                     return;
                 }
 
-                // Properly construct Groq Vision API arrays if image files exist
+               
                 if (msg.uploadedMedia && msg.uploadedMedia.some(m => m.type.startsWith('image/'))) {
                     let contentArray = [];
                     
-                    // 1. Core Text prompt
+                 
                     contentArray.push({ type: "text", text: msg.content || "Describe this image." });
                     
-                    // 2. Base64 Image URLs
+                    
                     msg.uploadedMedia.forEach(m => {
                         if (m.type.startsWith('image/')) {
                             contentArray.push({
@@ -1178,7 +1166,7 @@
                     model: chosenModel, 
                     messages: apiMessages, 
                     stream: true,
-                    max_completion_tokens: 4000
+                    max_completion_tokens: 3000
                 })
             });
 
@@ -1367,7 +1355,7 @@
         chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
     }
 
-    // Enter Key Handler
+
     function handleKeyPress(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
